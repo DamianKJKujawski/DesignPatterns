@@ -1,4 +1,4 @@
-# Repository: Other-Projects
+# Repository: DesignPatterns
 
   Random templates.
 
