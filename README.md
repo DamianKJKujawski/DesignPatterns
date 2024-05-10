@@ -420,3 +420,68 @@ int main()
     return 0;
 }
 ```
+
+## Decorator:
+
+```
+#include <iostream>
+#include <memory>
+
+class Component {
+public:
+    virtual void operation() const = 0;
+    virtual ~Component() {}
+};
+
+class ConcreteComponent : public Component {
+public:
+    void operation() const override {
+        std::cout << "Base operation" << std::endl;
+    }
+};
+
+class Decorator : public Component {
+protected:
+    std::unique_ptr<Component> component;
+
+public:
+    Decorator(std::unique_ptr<Component> comp) : component(std::move(comp)) {}
+
+    void operation() const override {
+        if (component) {
+            component->operation();
+        }
+    }
+};
+
+class ConcreteDecoratorA : public Decorator {
+public:
+    ConcreteDecoratorA(std::unique_ptr<Component> comp) : Decorator(std::move(comp)) {}
+
+    void operation() const override {
+        Decorator::operation();
+        std::cout << "Decorator A operation" << std::endl;
+    }
+};
+
+class ConcreteDecoratorB : public Decorator {
+public:
+    ConcreteDecoratorB(std::unique_ptr<Component> comp) : Decorator(std::move(comp)) {}
+
+    void operation() const override {
+        Decorator::operation();
+        std::cout << "Decorator B operation" << std::endl;
+    }
+};
+
+int main() {
+    std::unique_ptr<Component> component = std::make_unique<ConcreteComponent>();
+
+    component = std::make_unique<ConcreteDecoratorA>(std::move(component));
+    component = std::make_unique<ConcreteDecoratorB>(std::move(component));
+
+    component->operation();
+
+    return 0;
+}
+```
