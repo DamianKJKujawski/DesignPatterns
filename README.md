@@ -602,7 +602,8 @@ public:
     }
 };
 
-int main() {
+int main()
+{
     Facade facade;
     facade.operation();
 
