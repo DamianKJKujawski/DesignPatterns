@@ -354,3 +354,69 @@ int main() {
     return 0;
 }
 ```
+
+## Strategy Pattern:
+
+```
+#include <iostream>
+#include <memory>
+
+class Strategy {
+public:
+    virtual void execute() = 0;
+    virtual ~Strategy() {}
+};
+
+class ConcreteStrategyA : public Strategy
+{
+public:
+    void execute() override {
+        std::cout << "Wywołano strategię A" << std::endl;
+    }
+};
+
+class ConcreteStrategyB : public Strategy
+{
+public:
+    void execute() override {
+        std::cout << "Wywołano strategię B" << std::endl;
+    }
+};
+
+
+class Context
+{
+private:
+    std::unique_ptr<Strategy> strategy;
+
+public:
+    void setStrategy(std::unique_ptr<Strategy> newStrategy)
+    {
+        strategy = std::move(newStrategy); // Move resources...
+    }
+
+    void executeStrategy()
+    {
+        if (strategy)
+        {
+            strategy->execute();
+        } else
+        {
+            std::cout << "Brak zdefiniowanej strategii" << std::endl;
+        }
+    }
+};
+
+int main()
+{
+    Context context;
+
+    context.setStrategy(std::make_unique<ConcreteStrategyA>());
+    context.executeStrategy();
+
+    context.setStrategy(std::make_unique<ConcreteStrategyB>());
+    context.executeStrategy();
+
+    return 0;
+}
+```
