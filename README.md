@@ -549,13 +549,9 @@ int main()
     subject.attach(&observer1);
     subject.attach(&observer2);
 
-    // Subject does something, observers are notified
     subject.doSomething();
 
-    // Detach observer1
     subject.detach(&observer1);
-
-    // Subject does something again, only observer2 is notified
     subject.doSomething();
 
     return 0;
