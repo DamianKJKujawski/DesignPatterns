@@ -494,13 +494,11 @@ Observer:
 #include <vector>
 #include <algorithm>
 
-// Observer interface
 class Observer {
 public:
     virtual void update() = 0;
 };
 
-// Subject interface
 class Subject {
 public:
     virtual void attach(Observer* observer) = 0;
@@ -508,7 +506,6 @@ public:
     virtual void notify() = 0;
 };
 
-// Concrete subject
 class ConcreteSubject : public Subject {
 private:
     std::vector<Observer*> observers;
@@ -536,8 +533,8 @@ public:
     }
 };
 
-// Concrete observer
-class ConcreteObserver : public Observer {
+class ConcreteObserver : public Observer
+{
 public:
     void update() override {
         std::cout << "Observer is notified about the change." << std::endl;
