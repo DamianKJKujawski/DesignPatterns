@@ -371,7 +371,7 @@ class ConcreteStrategyA : public Strategy
 {
 public:
     void execute() override {
-        std::cout << "Wywołano strategię A" << std::endl;
+        std::cout << "Strategy A called" << std::endl;
     }
 };
 
@@ -379,7 +379,7 @@ class ConcreteStrategyB : public Strategy
 {
 public:
     void execute() override {
-        std::cout << "Wywołano strategię B" << std::endl;
+        std::cout << "Strategy B called" << std::endl;
     }
 };
 
@@ -402,7 +402,7 @@ public:
             strategy->execute();
         } else
         {
-            std::cout << "Brak zdefiniowanej strategii" << std::endl;
+            std::cout << "No strategy defined" << std::endl;
         }
     }
 };
