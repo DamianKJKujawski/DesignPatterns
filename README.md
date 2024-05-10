@@ -298,3 +298,59 @@ int main()
     return 0;
 }
 ```
+
+## Factory:
+
+```
+class Product {
+public:
+    virtual void operation() = 0;
+};
+
+class ConcreteProductA : public Product {
+public:
+    void operation() override {
+        std::cout << "Poduct A called" << std::endl;
+    }
+};
+
+class ConcreteProductB : public Product {
+public:
+    void operation() override {
+        std::cout << "Poduct B called" << std::endl;
+    }
+};
+
+
+class Factory {
+public:
+    virtual std::unique_ptr<Product> createProduct() = 0;
+};
+
+class ConcreteFactoryA : public Factory {
+public:
+    std::unique_ptr<Product> createProduct() override {
+        return std::make_unique<ConcreteProductA>();
+    }
+};
+
+class ConcreteFactoryB : public Factory {
+public:
+    std::unique_ptr<Product> createProduct() override {
+        return std::make_unique<ConcreteProductB>();
+    }
+};
+
+int main() {
+
+    std::unique_ptr<Factory> factoryA = std::make_unique<ConcreteFactoryA>();
+    std::unique_ptr<Product> productA = factoryA->createProduct();
+    productA->operation();
+
+    std::unique_ptr<Factory> factoryB = std::make_unique<ConcreteFactoryB>();
+    std::unique_ptr<Product> productB = factoryB->createProduct();
+    productB->operation();
+
+    return 0;
+}
+```
