@@ -203,3 +203,98 @@ GUI Binder:
 
 
 
+# Simple outlines:
+
+## Singleton:
+
+```
+#include <iostream>
+
+class Singleton
+{
+private:
+
+    Singleton() {}
+
+    static Singleton* instance;
+
+public:
+
+    static Singleton& getInstance()
+    {
+        if (!instance)
+        {
+            instance = new Singleton();
+        }
+        return *instance;
+    }
+
+    void someMethod()
+    {
+        std::cout << "Singletona called..." << std::endl;
+    }
+
+    Singleton(Singleton const&) = delete;
+    void operator=(Singleton const&) = delete;
+};
+
+Singleton* Singleton::instance = nullptr;
+
+int main() {
+
+    Singleton& singleton = Singleton::getInstance();
+    singleton.someMethod();
+    return 0;
+}
+```
+
+## MVVM:
+
+```
+#include <iostream>
+#include <string>
+
+class Model
+{
+  private:
+      std::string data;
+
+  public:
+      void setData(const std::string& newData)
+      {
+          data = newData;
+      }
+      std::string getData() const {
+          return data;
+      }
+};
+
+class ViewModel
+{
+  private:
+      Model model;
+  
+  public:
+      void updateData(const std::string& newData)
+      {
+          model.setData(newData);
+      }
+      std::string getData() const
+      {
+          return model.getData();
+      }
+};
+
+int main()
+{
+    ViewModel viewModel;
+
+    std::cout << "Current data: " << viewModel.getData() << std::endl;
+
+    viewModel.updateData("New data!");
+
+    std::cout << "New Data: " << viewModel.getData() << std::endl;
+
+    return 0;
+}
+```
