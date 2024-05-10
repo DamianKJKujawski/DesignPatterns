@@ -474,13 +474,92 @@ public:
     }
 };
 
-int main() {
+int main()
+{
     std::unique_ptr<Component> component = std::make_unique<ConcreteComponent>();
 
     component = std::make_unique<ConcreteDecoratorA>(std::move(component));
     component = std::make_unique<ConcreteDecoratorB>(std::move(component));
 
     component->operation();
+
+    return 0;
+}
+```
+
+Observer:
+
+```
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+// Observer interface
+class Observer {
+public:
+    virtual void update() = 0;
+};
+
+// Subject interface
+class Subject {
+public:
+    virtual void attach(Observer* observer) = 0;
+    virtual void detach(Observer* observer) = 0;
+    virtual void notify() = 0;
+};
+
+// Concrete subject
+class ConcreteSubject : public Subject {
+private:
+    std::vector<Observer*> observers;
+
+public:
+    void attach(Observer* observer) override {
+        observers.push_back(observer);
+    }
+
+    void detach(Observer* observer) override {
+        observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
+    }
+
+    void notify() override {
+        for (auto observer : observers) {
+            observer->update();
+        }
+    }
+
+    void doSomething() {
+        // Do something interesting...
+        std::cout << "Subject is doing something..." << std::endl;
+        // Notify observers after the state change
+        notify();
+    }
+};
+
+// Concrete observer
+class ConcreteObserver : public Observer {
+public:
+    void update() override {
+        std::cout << "Observer is notified about the change." << std::endl;
+    }
+};
+
+int main()
+{
+    ConcreteSubject subject;
+    ConcreteObserver observer1, observer2;
+
+    subject.attach(&observer1);
+    subject.attach(&observer2);
+
+    // Subject does something, observers are notified
+    subject.doSomething();
+
+    // Detach observer1
+    subject.detach(&observer1);
+
+    // Subject does something again, only observer2 is notified
+    subject.doSomething();
 
     return 0;
 }
